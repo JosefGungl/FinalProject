@@ -1,0 +1,3 @@
+2022-05-06 10:23:25.6503|INFO|FinalProject.Program|Program started
+2022-05-06 10:23:28.4003|INFO|FinalProject.Program|Option 1 selected
+2022-05-06 10:23:28.4003|INFO|FinalProject.Program|Program ended
