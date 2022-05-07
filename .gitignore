@@ -1,4 +1,4 @@
 bin 
 obj
-.json
+*.json
 .gitignore
