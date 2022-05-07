@@ -26,6 +26,8 @@ namespace FinalProject
                     Console.WriteLine("3) Add New Product");
                     Console.WriteLine("4) Display Category and related products");
                     Console.WriteLine("5) Display all Categories and their related products");
+                    Console.WriteLine("6) Edit a Product");
+                    Console.WriteLine("7) Display a Product");
                     Console.WriteLine("\"q\" to quit");
                     choice = Console.ReadLine();
                     Console.Clear();
@@ -172,6 +174,46 @@ namespace FinalProject
                             }
                         }
                     }
+                    else if (choice == "6")
+                    {
+                        var db = new NWConsole_48_JAGContext();
+                        Console.Write("Enter the Product to edit: ");
+                        var product = GetProduct(db);
+                        if (product != null)
+                        {
+                            Product UpdatedProduct = InputProduct(db);
+                            if (UpdatedProduct != null)
+                            {
+                                UpdatedProduct.ProductId = product.ProductId;
+                                db.EditProduct(UpdatedProduct);
+                                logger.Info($"Product (id: {product.ProductId}) updated");
+                            }
+                        }
+                    }
+                    else if (choice == "7")
+                    {
+                        var db = new NWConsole_48_JAGContext();
+                        string view;
+                        Console.WriteLine("What product would you like to view?");
+                        view = Console.ReadLine();
+                        var query = db.Products;
+                        foreach (var item in query)
+                        {
+                            if (item.ProductName == view)
+                            {
+                                int id = item.ProductId;
+                                foreach(var x in query)
+                                {
+                                    if(x.ProductId == id)
+                                    {
+                                        Console.WriteLine($"Product Id: {item.ProductId} \nProduct Name: {item.ProductName} \nSupplierId: {item.SupplierId} \nCategoryId: {item.CategoryId} \nQuantity Per Unit: {item.QuantityPerUnit} \nUnit Price: {item.UnitPrice} \nUnits in Stock: {item.UnitsInStock} \nUnits on Order: {item.UnitsOnOrder} \nReorder Level: {item.ReorderLevel} \nDiscontinued: {item.Discontinued}");
+                                        Console.WriteLine(" ");
+                                    }
+                                }
+                            }else {logger.Info("Invalid Product name");}
+                        }
+
+                    }
                     Console.WriteLine();
 
 
@@ -194,6 +236,58 @@ namespace FinalProject
                 Console.WriteLine(ex.Message);
             }
             logger.Info("Program ended");
+        }
+        public static Product InputProduct(NWConsole_48_JAGContext db)
+        {
+            Product product = new Product();
+            Console.WriteLine("Enter the Product name");
+            product.ProductName = Console.ReadLine();
+
+            ValidationContext context = new ValidationContext(product, null, null);
+            List<ValidationResult> results = new List<ValidationResult>();
+
+            var isValid = Validator.TryValidateObject(product, context, results, true);
+            if (isValid)
+            {
+                // check for unique name
+                if (db.Products.Any(p => p.ProductName == product.ProductName))
+                {
+                    // generate validation error
+                    isValid = false;
+                    results.Add(new ValidationResult("Product name exists", new string[] { "Name" }));
+                }
+                else
+                {
+                    logger.Info("Validation passed");
+                }
+            }
+            if (!isValid)
+            {
+                foreach (var result in results)
+                {
+                    logger.Error($"{result.MemberNames.First()} : {result.ErrorMessage}");
+                }
+                return null;
+            }
+            return product;
+        }
+        public static Product GetProduct(NWConsole_48_JAGContext db)
+        {
+            var products = db.Products.OrderBy(p => p.ProductId);
+            foreach (Product p in products)
+            {
+                Console.WriteLine($"{p.ProductId}: {p.ProductName}");
+            }
+            if (int.TryParse(Console.ReadLine(), out int ProductId))
+            {
+                Product product = db.Products.FirstOrDefault(p => p.ProductId == ProductId);
+                if (product != null)
+                {
+                    return product;
+                }
+            }
+            logger.Error("Invalid Product Id");
+            return null;
         }
     }
 }

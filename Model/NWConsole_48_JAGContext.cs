@@ -39,6 +39,12 @@ namespace FinalProject.Model
             this.Products.Add(product);
             this.SaveChanges();
         }
+        public void EditProduct(Product UpdatedProduct)
+        {
+            Product product = this.Products.Find(UpdatedProduct.ProductId);
+            product.ProductName = UpdatedProduct.ProductName;
+            this.SaveChanges();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
