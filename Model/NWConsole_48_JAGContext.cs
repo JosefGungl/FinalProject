@@ -34,6 +34,11 @@ namespace FinalProject.Model
             this.Categories.Add(category);
             this.SaveChanges();
         }
+        public void AddProduct(Product product)
+        {
+            this.Products.Add(product);
+            this.SaveChanges();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

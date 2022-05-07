@@ -68,7 +68,7 @@ namespace FinalProject
                             else
                             {
                                 logger.Info("Validation passed");
-                                // TODO: save category to db
+                                //save category to db
                                 db.AddCategory(category);
                                 logger.Info($"Category added - {category.CategoryName}");
                             }
@@ -105,6 +105,36 @@ namespace FinalProject
                         if (tempDesc == 0){
                             product.Discontinued = false;
                         }else {product.Discontinued = true;}
+
+                        ValidationContext context = new ValidationContext(product, null, null);
+                        List<ValidationResult> results = new List<ValidationResult>();
+
+                        var isValid = Validator.TryValidateObject(product, context, results, true);
+                        if (isValid)
+                        {
+                            var db = new NWConsole_48_JAGContext();
+                            // check for unique name
+                            if (db.Products.Any(p => p.ProductName == product.ProductName))
+                            {
+                                // generate validation error
+                                isValid = false;
+                                results.Add(new ValidationResult("Name exists", new string[] { "ProductName" }));
+                            }
+                            else
+                            {
+                                logger.Info("Validation passed");
+                                //save products to db
+                                db.AddProduct(product);
+                                logger.Info($"Product added - {product.ProductName}");
+                            }
+                        }
+                        if (!isValid)
+                        {
+                            foreach (var result in results)
+                            {
+                                logger.Error($"{result.MemberNames.First()} : {result.ErrorMessage}");
+                            }
+                        }
                         
                     }
                     else if (choice == "4")
