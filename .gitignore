@@ -1,4 +1,5 @@
-bin 
+appsettings.json
+bin
 obj
-*.json
-.gitignore
+Migrations
+.vscode
