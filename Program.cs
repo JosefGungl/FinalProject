@@ -47,9 +47,9 @@ namespace FinalProject
                     else if (choice == "2")
                     {
                         Category category = new Category();
-                        Console.WriteLine("Enter Category Name:");
+                        Console.Write("Enter Category Name:");
                         category.CategoryName = Console.ReadLine();
-                        Console.WriteLine("Enter the Category Description:");
+                        Console.Write("Enter the Category Description:");
                         category.Description = Console.ReadLine();
                         ValidationContext context = new ValidationContext(category, null, null);
                         List<ValidationResult> results = new List<ValidationResult>();
@@ -69,6 +69,8 @@ namespace FinalProject
                             {
                                 logger.Info("Validation passed");
                                 // TODO: save category to db
+                                db.AddCategory(category);
+                                logger.Info($"Category added - {category.CategoryName}");
                             }
                         }
                         if (!isValid)
@@ -80,6 +82,32 @@ namespace FinalProject
                         }
                     }
                     else if (choice == "3")
+                    {
+                        Product product = new Product();
+                        Console.Write("Enter Product Name: ");
+                        product.ProductName = Console.ReadLine();
+                        Console.Write("Enter Supplier ID: ");
+                        product.SupplierId = int.Parse(Console.ReadLine());
+                        Console.Write("Enter Catergory ID: ");
+                        product.CategoryId = int.Parse(Console.ReadLine());
+                        Console.Write("Enter Quantity Per Unit: ");
+                        product.QuantityPerUnit = Console.ReadLine();
+                        Console.Write("Enter Unit Price: ");
+                        product.UnitPrice = int.Parse(Console.ReadLine());
+                        Console.Write("Enter Number of Units in Stock: ");
+                        product.UnitsInStock = short.Parse(Console.ReadLine());
+                        Console.Write("Enter Number of Units on Order: ");
+                        product.UnitsOnOrder = short.Parse(Console.ReadLine());
+                        Console.Write("Enter Reorder Level: ");
+                        product.ReorderLevel = short.Parse(Console.ReadLine());
+                        Console.Write("Is it discontinued? (0 = no   1 = yes): ");
+                        int tempDesc = int.Parse(Console.ReadLine());
+                        if (tempDesc == 0){
+                            product.Discontinued = false;
+                        }else {product.Discontinued = true;}
+                        
+                    }
+                    else if (choice == "4")
                     {
                         var db = new NWConsole_48_JAGContext();
                         var query = db.Categories.OrderBy(p => p.CategoryId);
@@ -101,7 +129,7 @@ namespace FinalProject
                             Console.WriteLine(p.ProductName);
                         }
                     }
-                    else if (choice == "4")
+                    else if (choice == "5")
                     {
                         var db = new NWConsole_48_JAGContext();
                         var query = db.Categories.Include("Products").OrderBy(p => p.CategoryId);
