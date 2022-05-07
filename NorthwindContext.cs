@@ -4,9 +4,9 @@ namespace FinalProject
 {
     public class NorthwindContext : DbContext
     {
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Category2> Categories { get; set; }
 
-        public void AddCategory(Category category)
+        public void AddCategory(Category2 category)
         {
             this.Categories.Add(category);
             this.SaveChanges();

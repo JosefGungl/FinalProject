@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace FinalProject.Model
         }
 
         public int CategoryId { get; set; }
+        [Required(ErrorMessage = "Please enter a name")]
         public string CategoryName { get; set; }
         public string Description { get; set; }
 
