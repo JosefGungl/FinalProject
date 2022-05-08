@@ -191,6 +191,8 @@ namespace FinalProject
                                 UpdatedProduct.ProductId = product.ProductId;
                                 Console.WriteLine("What would you like to update?\n1) Product Name\n2) SupplierId\n3) CategoryId\n4) Quantity Per Unit\n5) Unit Price\n6) Units in stock\n7) Units on order\n8) Reorder level\n9) Discontinued");
                                 int choice2 = int.Parse(Console.ReadLine());
+                                Console.Clear();
+                                logger.Info($"Option {choice2} selected");
                                 if (choice2 == 1) 
                                 {
                                     Console.Write("Enter new product name: ");
@@ -255,6 +257,8 @@ namespace FinalProject
                         string view;
                         Console.WriteLine("What product would you like to view?");
                         view = Console.ReadLine();
+                        Console.Clear();
+                        logger.Info($"{view} selected");
                         var query = db.Products;
                         foreach (var item in query)
                         {
@@ -276,9 +280,9 @@ namespace FinalProject
                         int choice2;
                         Console.WriteLine("Select one option:\n1) View all products\n2) View discontinued products\n3) View active products");
                         choice2 = int.Parse(Console.ReadLine());
+                        Console.Clear();
+                        logger.Info($"Option {choice2} selected");
                         
-                            Console.Clear();
-                            logger.Info($"Option {choice} selected");
 
                             var query = db.Products;
                             Console.WriteLine("Discontinued Products are red");
@@ -343,6 +347,7 @@ namespace FinalProject
                                     UpdatedCategory.CategoryName = Console.ReadLine();
                                     Console.WriteLine("Enter new Category Description");
                                     UpdatedCategory.Description = Console.ReadLine();
+                                    logger.Info($"Category {UpdatedCategory.CategoryName} updated");
                                 }
                             }
                         }
