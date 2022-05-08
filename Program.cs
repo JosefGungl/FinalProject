@@ -28,6 +28,9 @@ namespace FinalProject
                     Console.WriteLine("5) Display all Categories and their related products");
                     Console.WriteLine("6) Edit a Product");
                     Console.WriteLine("7) Display a Product");
+                    Console.WriteLine("8) Display all Products");
+                    Console.WriteLine("9) Edit a Category");
+
                     Console.WriteLine("\"q\" to quit");
                     choice = Console.ReadLine();
                     Console.Clear();
@@ -185,9 +188,64 @@ namespace FinalProject
                             if (UpdatedProduct != null)
                             {
                                 UpdatedProduct.ProductId = product.ProductId;
-                                db.EditProduct(UpdatedProduct);
-                                logger.Info($"Product (id: {product.ProductId}) updated");
-                            }
+                                Console.WriteLine("What would you like to update?\n1) Product Name\n2) SupplierId\n3) CategoryId\n4) Quantity Per Unit\n5) Unit Price\n6) Units in stock\n7) Units on order\n8) Reorder level\n9) Discontinued");
+                                int choice2 = int.Parse(Console.ReadLine());
+                                if (choice2 == 1) 
+                                {
+                                    Console.Write("Enter new product name: ");
+                                    UpdatedProduct.ProductName = Console.ReadLine();
+                                }
+                                if (choice2 == 2) 
+                                {
+                                    Console.Write("Enter new supplier ID: ");
+                                    UpdatedProduct.SupplierId = int.Parse(Console.ReadLine());
+                                }
+                                if (choice2 == 3) 
+                                {
+                                    Console.Write("Enter new catergory ID: ");
+                                    UpdatedProduct.CategoryId = int.Parse(Console.ReadLine());
+                                }
+                                if (choice2 == 4) 
+                                {
+                                    Console.Write("Enter new quantity per unit: ");
+                                    UpdatedProduct.QuantityPerUnit = Console.ReadLine();
+                                }
+                                if (choice2 == 5) 
+                                {
+                                    Console.Write("Enter new unit price: ");
+                                    UpdatedProduct.UnitPrice = int.Parse(Console.ReadLine());
+                                }
+                                if (choice2 == 6) 
+                                {
+                                    Console.Write("Enter new number of units in stock: ");
+                                    UpdatedProduct.UnitsInStock = short.Parse(Console.ReadLine());
+                                }
+                                if (choice2 == 7) 
+                                {
+                                    Console.Write("Enter new number of units on order: ");
+                                    UpdatedProduct.UnitsOnOrder = short.Parse(Console.ReadLine());
+                                }
+                                if (choice2 == 8) 
+                                {
+                                    Console.Write("Enter new reorder level: ");
+                                    UpdatedProduct.ReorderLevel = short.Parse(Console.ReadLine());
+                                }
+                                if (choice2 == 9) 
+                                {
+                                    Console.Write("Is it discontinued? (0 = no   1 = yes): ");
+                                    int tempDesc = int.Parse(Console.ReadLine());
+                                    if (tempDesc == 0){
+                                        product.Discontinued = false;
+                                }
+                                else 
+                                {
+                                    product.Discontinued = true;
+                                }
+                                }
+                                
+                                    db.EditProduct(UpdatedProduct);
+                                    logger.Info($"Product (id: {product.ProductId}) updated");
+                                }
                         }
                     }
                     else if (choice == "7")
@@ -202,18 +260,69 @@ namespace FinalProject
                             if (item.ProductName == view)
                             {
                                 int id = item.ProductId;
-                                foreach(var x in query)
+                                if(item.ProductId == id)
                                 {
-                                    if(x.ProductId == id)
+                                    Console.WriteLine($"Product Id: {item.ProductId} \nProduct Name: {item.ProductName} \nSupplierId: {item.SupplierId} \nCategoryId: {item.CategoryId} \nQuantity Per Unit: {item.QuantityPerUnit} \nUnit Price: {item.UnitPrice} \nUnits in Stock: {item.UnitsInStock} \nUnits on Order: {item.UnitsOnOrder} \nReorder Level: {item.ReorderLevel} \nDiscontinued: {item.Discontinued}");
+                                    Console.WriteLine(" ");
+                                }
+                                
+                            }
+                        }
+                    }
+                    else if (choice == "8")
+                    {
+                        var db = new NWConsole_48_JAGContext();
+                        int choice2;
+                        Console.WriteLine("Select one option:\n1) View all products\n2) View discontinued products\n3) View active products");
+                        choice2 = int.Parse(Console.ReadLine());
+                        
+                            Console.Clear();
+                            logger.Info($"Option {choice} selected");
+
+                            var query = db.Products;
+                            Console.WriteLine("Discontinued Products are red");
+                            foreach (var item in query)
+                            {
+                                if (choice2 == 1)
+                                {
+                                    if (item.Discontinued == true)
                                     {
-                                        Console.WriteLine($"Product Id: {item.ProductId} \nProduct Name: {item.ProductName} \nSupplierId: {item.SupplierId} \nCategoryId: {item.CategoryId} \nQuantity Per Unit: {item.QuantityPerUnit} \nUnit Price: {item.UnitPrice} \nUnits in Stock: {item.UnitsInStock} \nUnits on Order: {item.UnitsOnOrder} \nReorder Level: {item.ReorderLevel} \nDiscontinued: {item.Discontinued}");
-                                        Console.WriteLine(" ");
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine(item.ProductName);
+                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                    }
+                                    if (item.Discontinued == false)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                        Console.WriteLine(item.ProductName);
                                     }
                                 }
-                            }else {logger.Info("Invalid Product name");}
+                                if (choice2 == 2)
+                                {
+                                    if (item.Discontinued == true)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine(item.ProductName);
+                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                    }
+                                }
+                                if (choice2 == 3)
+                                {
+                                    if (item.Discontinued == false)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                        Console.WriteLine(item.ProductName);
+                                    }
+                                }
+                            }
+                            if(choice2 != 1 || choice2 != 2 || choice2 != 3){logger.Info("Invalid Choice");}
+                        
                         }
-
-                    }
+                        else if (choice == "9")
+                        {
+                            var db = new NWConsole_48_JAGContext();
+                            Console.Write("Enter the category to edit: ");
+                        }
                     Console.WriteLine();
 
 
@@ -239,7 +348,9 @@ namespace FinalProject
         }
         public static Product InputProduct(NWConsole_48_JAGContext db)
         {
+            
             Product product = new Product();
+            /*
             Console.WriteLine("Enter the Product name");
             product.ProductName = Console.ReadLine();
 
@@ -268,7 +379,7 @@ namespace FinalProject
                     logger.Error($"{result.MemberNames.First()} : {result.ErrorMessage}");
                 }
                 return null;
-            }
+            }*/
             return product;
         }
         public static Product GetProduct(NWConsole_48_JAGContext db)
