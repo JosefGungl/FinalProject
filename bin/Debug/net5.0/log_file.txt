@@ -2844,3 +2844,24 @@
 2022-05-08 14:58:35.9718|INFO|FinalProject.Program|Option 7 selected
 2022-05-08 14:58:53.5288|INFO|FinalProject.Program|Option q selected
 2022-05-08 14:58:53.5288|INFO|FinalProject.Program|Program ended
+2022-05-08 16:08:23.6146|INFO|FinalProject.Program|Program started
+2022-05-08 16:08:26.0050|INFO|FinalProject.Program|Option 1 selected
+2022-05-08 16:08:26.1856|INFO|FinalProject.Program|Program ended
+2022-05-08 16:09:19.0408|INFO|FinalProject.Program|Program started
+2022-05-08 16:09:20.4642|INFO|FinalProject.Program|Option 1 selected
+2022-05-08 16:09:20.5575|INFO|FinalProject.Program|Program ended
+2022-05-08 16:11:39.7266|INFO|FinalProject.Program|Program started
+2022-05-08 16:11:41.0227|INFO|FinalProject.Program|Option 1 selected
+2022-05-08 16:11:41.1162|INFO|FinalProject.Program|Program ended
+2022-05-08 16:14:11.1898|INFO|FinalProject.Program|Program started
+2022-05-08 16:14:11.9182|INFO|FinalProject.Program|Option 1 selected
+2022-05-08 16:14:24.0651|INFO|FinalProject.Program|Option q selected
+2022-05-08 16:14:24.0651|INFO|FinalProject.Program|Program ended
+2022-05-08 16:21:41.1445|INFO|FinalProject.Program|Program started
+2022-05-08 16:21:44.6986|INFO|FinalProject.Program|Option q selected
+2022-05-08 16:21:44.6986|INFO|FinalProject.Program|Program ended
+2022-05-08 16:21:49.9874|INFO|FinalProject.Program|Program started
+2022-05-08 16:21:52.9775|INFO|FinalProject.Program|Option 4 selected
+2022-05-08 16:21:57.3945|INFO|FinalProject.Program|CategoryId 1 selected
+2022-05-08 16:22:17.8726|INFO|FinalProject.Program|Option q selected
+2022-05-08 16:22:17.8726|INFO|FinalProject.Program|Program ended

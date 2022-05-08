@@ -24,12 +24,13 @@ namespace FinalProject
                     Console.WriteLine("1) Display Categories");
                     Console.WriteLine("2) Add Category");
                     Console.WriteLine("3) Add New Product");
-                    Console.WriteLine("4) Display Category and related products");
+                    Console.WriteLine("4) Display a specific Category and related products");
                     Console.WriteLine("5) Display all Categories and their related products");
                     Console.WriteLine("6) Edit a Product");
                     Console.WriteLine("7) Display a Product");
                     Console.WriteLine("8) Display all Products");
                     Console.WriteLine("9) Edit a Category");
+                    Console.WriteLine("10) Display all Categories and their related active products");
 
                     Console.WriteLine("\"q\" to quit");
                     choice = Console.ReadLine();
@@ -289,11 +290,11 @@ namespace FinalProject
                                     {
                                         Console.ForegroundColor = ConsoleColor.Red;
                                         Console.WriteLine(item.ProductName);
-                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                        Console.ForegroundColor = ConsoleColor.White;
                                     }
                                     if (item.Discontinued == false)
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                        Console.ForegroundColor = ConsoleColor.White;
                                         Console.WriteLine(item.ProductName);
                                     }
                                 }
@@ -303,14 +304,14 @@ namespace FinalProject
                                     {
                                         Console.ForegroundColor = ConsoleColor.Red;
                                         Console.WriteLine(item.ProductName);
-                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                        Console.ForegroundColor = ConsoleColor.White;
                                     }
                                 }
                                 if (choice2 == 3)
                                 {
                                     if (item.Discontinued == false)
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                        Console.ForegroundColor = ConsoleColor.White;
                                         Console.WriteLine(item.ProductName);
                                     }
                                 }
@@ -322,8 +323,47 @@ namespace FinalProject
                         {
                             var db = new NWConsole_48_JAGContext();
                             Console.Write("Enter the category to edit: ");
+                            var query = db.Categories.OrderBy(p => p.CategoryName);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"{query.Count()} records returned");
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            foreach (var item in query)
+                            {
+                                Console.WriteLine(item.CategoryName);
+                            }
+                            Console.ForegroundColor = ConsoleColor.White;
+                            var category = GetCategory(db);
+                            if (category != null)
+                            {
+                                Category UpdatedCategory = InputCategory(db);
+                                if (UpdatedCategory != null)
+                                {
+                                    UpdatedCategory.CategoryId = category.CategoryId;
+                                    Console.WriteLine("Enter new Category Name");
+                                    UpdatedCategory.CategoryName = Console.ReadLine();
+                                    Console.WriteLine("Enter new Category Description");
+                                    UpdatedCategory.Description = Console.ReadLine();
+                                }
+                            }
                         }
-                    Console.WriteLine();
+                        else if (choice == "10")
+                            {
+                                var db = new NWConsole_48_JAGContext();
+                                var query = db.Categories.Include("Products").OrderBy(p => p.CategoryId);
+                                foreach (var item in query)
+                                {
+                                    Console.WriteLine($"{item.CategoryName}");
+                                    foreach (Product p in item.Products)
+                                    {
+                                        if (p.Discontinued == false)
+                                        {
+                                            Console.WriteLine($"\t{p.ProductName}");
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        Console.WriteLine();
 
 
 
@@ -337,14 +377,19 @@ namespace FinalProject
 
 
 
-                }
-                while (choice.ToLower() != "q");
+                
+                }while (choice.ToLower() != "q");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
             logger.Info("Program ended");
+        }
+        public static Category InputCategory (NWConsole_48_JAGContext db)
+        {
+            Category category = new Category();
+            return category;
         }
         public static Product InputProduct(NWConsole_48_JAGContext db)
         {
@@ -395,6 +440,24 @@ namespace FinalProject
                 if (product != null)
                 {
                     return product;
+                }
+            }
+            logger.Error("Invalid Product Id");
+            return null;
+        }
+        public static Category GetCategory(NWConsole_48_JAGContext db)
+        {
+            var category = db.Categories.OrderBy(p => p.CategoryId);
+            foreach (Category c in category)
+            {
+                Console.WriteLine($"{c.CategoryId}: {c.CategoryName}");
+            }
+            if (int.TryParse(Console.ReadLine(), out int CategoryId))
+            {
+                Category category1 = db.Categories.FirstOrDefault(c => c.CategoryId == CategoryId);
+                if (category != null)
+                {
+                    return category1;
                 }
             }
             logger.Error("Invalid Product Id");
